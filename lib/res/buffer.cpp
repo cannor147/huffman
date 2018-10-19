@@ -68,19 +68,19 @@ public:
         symbol *symb = my_symbol + char_index;
         bitset bit_symb(*symb);
         bitset result;
-        size_t curlen = bitset_size - bit_index;
-        int remlen = static_cast<int>(length - curlen);
-        curlen = std::min(curlen, length);
-        for (size_t i = 0; i < curlen; i++) {
+        size_t current_length = bitset_size - bit_index;
+        int remainder_length = static_cast<int>(length - current_length);
+        current_length = std::min(current_length, length);
+        for (size_t i = 0; i < current_length; i++) {
             result.set(i, bit_symb[i + bit_index]);
         }
-        bit_index = (bit_index + curlen) % bitset_size;
+        bit_index = (bit_index + current_length) % bitset_size;
         if (bit_index == 0) char_index++;
-        if (remlen <= 0) return result;
+        if (remainder_length <= 0) return result;
         symb = my_symbol + char_index;
         bitset rembits(*symb);
-        for (size_t i = 0; i < remlen; i++) {
-            result.set(i + curlen, rembits[i]);
+        for (size_t i = 0; i < remainder_length; i++) {
+            result.set(i + current_length, rembits[i]);
             bit_index++;
         }
         return result;
@@ -107,14 +107,14 @@ public:
     }
     void write_number(size_t value) {
         for (size_t i = 0; i < sizeof(size_t); i++) {
-            auto curc = static_cast<symbol>(value & 255);
+            auto curc = static_cast<symbol>(value);
             write_symbol(curc);
             value >>= bitset_size;
         }
     }
     void write_long_number(unsigned long long value) {
         write_number(value >> 32);
-        write_number(value & 0xFFFFFFFF);
+        write_number(static_cast<size_t>(value));
     }
     void write_bitset(const bitset &bits, size_t length) {
         if (length > bitset_size) {
@@ -122,23 +122,23 @@ public:
         }
         symbol *symb = my_symbol + char_index;
         bitset bit_symb(*symb);
-        size_t curlen = bitset_size - bit_index;
-        int remlen = static_cast<int>(length - curlen);
-        curlen = std::min(curlen, length);
-        for (size_t i = 0; i < curlen; i++) {
+        size_t currennt_length = bitset_size - bit_index;
+        int remainder_length = static_cast<int>(length - currennt_length);
+        currennt_length = std::min(currennt_length, length);
+        for (size_t i = 0; i < currennt_length; i++) {
             bit_symb.set(i + bit_index, bits[i]);
         }
-        *symb = bit_symb.to_ulong() & 255;
-        bit_index = (bit_index + curlen) % bitset_size;
+        *symb = static_cast<symbol>(bit_symb.to_ulong());
+        bit_index = (bit_index + currennt_length) % bitset_size;
         if (bit_index == 0) char_index++;
-        if (remlen > 0) {
+        if (remainder_length > 0) {
             symb = my_symbol + char_index;
             bit_symb.reset();
-            for (size_t i = 0; i < remlen; i++) {
-                bit_symb.set(i + bit_index, bits[i + curlen]);
+            for (size_t i = 0; i < remainder_length; i++) {
+                bit_symb.set(i + bit_index, bits[i + currennt_length]);
             }
-            bit_index += remlen;
-            *symb = bit_symb.to_ulong() & 255;
+            bit_index += remainder_length;
+            *symb = static_cast<symbol>(bit_symb.to_ulong());
         }
 
     }
