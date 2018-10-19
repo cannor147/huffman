@@ -16,6 +16,6 @@ using str = std::basic_string<symbol>;
 static const size_t bitset_size = sizeof(symbol) * 8;
 using bitset = std::bitset<bitset_size>;
 
-static size_t block_size = 1024 * 1024;
+static const size_t block_size = 1024 * 1024;
 
 #endif //HUFFMAN_CONSTS_H

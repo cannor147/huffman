@@ -42,7 +42,7 @@ struct symbol_code {
             l -= std::min(shifted, result.length);
             if (l > 0) {
                 if (bits_index > bits.size() - 1) {
-                    throw std::runtime_error("Error: Trailing bits while storing remaining bits!");
+                    throw std::runtime_error("Error #473: very big length");
                 }
                 size_t num = std::min(bit_index, l);
                 for (size_t i = 0; i < num; i++) {

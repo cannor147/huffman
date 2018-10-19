@@ -5,12 +5,12 @@ void huffman_decoder::read_header(buffer &bin) {
     std::vector<std::pair<symbol, size_t>> table;
     for (size_t i = 0; i < table_size; i++) {
         if (!bin.has_symbol()) {
-            std::cout << "Error #201: incorrect input file" << std::endl;
+            std::cout << "Error #301: incorrect input file" << std::endl;
             exit(0);
         }
         symbol c = bin.read_symbol();
         if (!bin.has_symbol()) {
-            std::cout << "Bad input!" << std::endl;
+            std::cout << "Error #301: incorrect input file" << std::endl;
         }
         table.emplace_back(c, static_cast<size_t>(bin.read_symbol()));
     }
@@ -39,7 +39,7 @@ void huffman_decoder::create_decode_tree() {
                 }
             }
             if (next_vertex->final) {
-                throw std::runtime_error("Ambiguity!");
+                throw std::runtime_error("Error #305: ambiguity");
             }
             current_vertex = next_vertex;
         }
@@ -54,11 +54,11 @@ bool huffman_decoder::decode_data(buffer &bin, buffer &bout) {
     for (size_t i = last_bit; i < bitset_size; i++) {
         current_vertex = (last_bitset[i] ? current_vertex->right.get() : current_vertex->left.get());
         if (!current_vertex) {
-            std::cout << "Bad code!" << std::endl;
+            std::cout << "Error #311: wrong decode tree" << std::endl;
             exit(0);
         }
         if (current_vertex->final) {
-            throw std::runtime_error("Decoding: incorret last bits from previous buffer!");
+            throw std::runtime_error("Error #312: wrong remainder from previous buffer");
         }
     }
     size_t last = 0;

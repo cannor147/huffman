@@ -53,7 +53,7 @@ int main(int argc, char** argv) {
             std::ofstream out(fileout, std::ios::binary);
             std::ifstream in(filein, std::ios::binary);
             if (!in.is_open() || !out.is_open()) {
-                std::cout << "Error! Can't open a file!" << std::endl;
+                std::cout << "Error #130: file is not able to opening" << std::endl;
                 return -1;
             }
 
@@ -62,7 +62,7 @@ int main(int argc, char** argv) {
             } else if (!strcmp(argv[1], "--decompress")) {
                 decompress(in, out);
             } else {
-                std::cout << "Error! Can't open a file!" << std::endl;
+                std::cout << "Error #130: file is not able to opening" << std::endl;
                 return -1;
             }
         }

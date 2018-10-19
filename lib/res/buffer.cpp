@@ -63,7 +63,7 @@ public:
     }
     bitset read_bitset(size_t length) {
         if (length > bitset_size) {
-            throw std::runtime_error("Too big bitset!");
+            throw std::runtime_error("Error #496: very big length of input");
         }
         symbol *symb = my_symbol + char_index;
         bitset bit_symb(*symb);
@@ -118,7 +118,7 @@ public:
     }
     void write_bitset(const bitset &bits, size_t length) {
         if (length > bitset_size) {
-            throw std::runtime_error("Too big bitset!");
+            throw std::runtime_error("Error #497: very big length of output");
         }
         symbol *symb = my_symbol + char_index;
         bitset bit_symb(*symb);

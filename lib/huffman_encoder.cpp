@@ -14,7 +14,7 @@ void huffman_encoder::write_header(buffer &bout) {
 }
 void huffman_encoder::create_encode_tree() {
     if(numbers.empty()) {
-        std::cout << "Error #101: empty input file" << std::endl;
+        std::cout << "Error #201: empty input file" << std::endl;
         exit(0);
     }
     std::priority_queue<std::pair<int, str>> tree;
@@ -75,7 +75,7 @@ bool huffman_encoder::encode_data(buffer &bin, buffer &bout) {
 bool huffman_encoder::flush_data(buffer &bout) {
     unsigned long long bit_num = bout.get_other_capacity();
     if (bit_num < last_code.length) {
-        throw std::runtime_error("Degenerated output buffer!");
+        throw std::runtime_error("Error #211: wrong output buffer");
     }
     if (last_code.length > 0) {
         last_code.write(bout);
@@ -114,7 +114,7 @@ bool huffman_encoder::flush_data(buffer &bout) {
 bool huffman_encoder::encode(symbol *input, size_t input_size, symbol *&output, size_t output_size, size_t &output_length) {
     buffer bin(input, input_size);
     if (output == nullptr) {
-        output_size = std::max(input_size, (size_t)1024);
+        output_size = std::max(input_size, static_cast<size_t>(1024));
         output = new symbol[output_size];
     }
     buffer bout(output, output_size);
@@ -149,7 +149,7 @@ bool huffman_encoder::last_byte(symbol &s) {
     if (last_code.length <= bitset_size) {
         s = static_cast<symbol>(last_code.bits[0].to_ulong());
     } else {
-        throw std::runtime_error("Error");
+        throw std::runtime_error("Error #209: wrong end of file");
     }
     return true;
 }
@@ -165,7 +165,7 @@ symbol_code huffman_encoder::get_char_code(const str &current_symbol) {
             current_vertex = right;
             my_bits.push_back(true);
         } else {
-            throw std::runtime_error("Error: incorrect string!");
+            throw std::runtime_error("Error #205: ambiguity");
         }
     }
     symbol_code result;
