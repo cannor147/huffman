@@ -48,7 +48,7 @@ public:
     size_t read_number() {
         size_t result = 0;
         size_t shift = 0;
-        for (size_t i = 0; i < sizeof(size_t); i++) {
+        for (size_t i = 0; i < sizeof(int); i++) {
             auto cur = static_cast<size_t>(read_symbol());
             result += cur << shift;
             shift += bitset_size;
@@ -106,7 +106,7 @@ public:
         char_index++;
     }
     void write_number(size_t value) {
-        for (size_t i = 0; i < sizeof(size_t); i++) {
+        for (size_t i = 0; i < sizeof(int); i++) {
             auto curc = static_cast<symbol>(value);
             write_symbol(curc);
             value >>= bitset_size;

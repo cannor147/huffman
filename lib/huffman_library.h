@@ -56,6 +56,7 @@ void stream_decompress(std::istream &in, std::ostream &out) {
     size_t input_size = 0;
     while ((input_size = read(in, input, input_length)) > 0) {
         size_t output_length = 0;
+
         bool t = my_decoder->decode(input, input_size, output, output_size, output_length);
         write(out, output, output_length);
         while (t) {

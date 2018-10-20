@@ -19,7 +19,6 @@ void huffman_decoder::read_header(buffer &bin) {
         codes[item.first].bits = bin.read_bitsets(item.second);
     }
     remainder_size = bin.read_long_number();
-    begin = true;
 }
 void huffman_decoder::create_decode_tree() {
     for (auto &code : codes) {
@@ -64,6 +63,7 @@ bool huffman_decoder::decode_data(buffer &bin, buffer &bout) {
     size_t last = 0;
     while (remainder_size != 0 && bin.has_symbol()) {
         current_bits = bin.read_bitset(bitset_size);
+        last = 0;
         for (size_t i = 0; i < bitset_size; i++) {
             if (current_bits[i]) {
                 current_vertex = current_vertex->right.get();
@@ -78,12 +78,9 @@ bool huffman_decoder::decode_data(buffer &bin, buffer &bout) {
                     stored.push_back(current_vertex->value);
                 }
                 current_vertex = &root;
-                if(capacity > 0) capacity--;
-                if(remainder_size > 0) {
-                    remainder_size--;
-                } else {
-                    break;
-                }
+                if (capacity > 0) capacity--;
+                if (remainder_size > 0) remainder_size--;
+                if (remainder_size == 0) break;
             }
         }
     }
@@ -120,6 +117,7 @@ bool huffman_decoder::decode(symbol *input, size_t input_size, symbol *&output, 
     if (!begin) {
         read_header(bin);
         create_decode_tree();
+        begin = true;
     }
     bool result = decode_data(bin, bout);
     output_length = bout.get_position();

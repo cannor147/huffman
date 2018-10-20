@@ -147,7 +147,7 @@ void huffman_encoder::prepare_encode_tree(symbol *input, size_t input_size) {
 bool huffman_encoder::last_byte(symbol &s) {
     if (last_code.length == 0) return false;
     if (last_code.length <= bitset_size) {
-        s = static_cast<symbol>(last_code.bits[0].to_ulong());
+        s = last_code.bits[0].to_ulong() & 255;
     } else {
         throw std::runtime_error("Error #209: wrong end of file");
     }
