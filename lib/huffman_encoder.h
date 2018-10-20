@@ -10,8 +10,8 @@ private:
     bool begin = false;
     std::unordered_map<symbol, int> numbers;
     std::unordered_map<symbol, symbol_code> codes;
-    str root;
-    std::map<str, std::pair<str, str>> huffman_tree;
+    bstring root;
+    std::map<bstring, std::pair<bstring, bstring>> huffman_tree;
     std::vector<symbol> stored;
     unsigned long long remainder_size = 0;
     symbol_code last_code;
@@ -22,7 +22,7 @@ protected:
     bool flush_data(buffer &bout);
     bool encode_data(buffer &bin, buffer &bout);
 
-    symbol_code get_char_code(const str &current_symbol);
+    symbol_code get_char_code(const bstring &current_symbol);
 
 public:
     bool encode(symbol *input, size_t input_size, symbol *&output, size_t output_size, size_t &output_length);

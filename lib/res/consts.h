@@ -11,7 +11,7 @@
 #include <memory>
 
 using symbol = unsigned char;
-using str = std::basic_string<symbol>;
+using bstring = std::basic_string<symbol>;
 
 static const size_t bitset_size = sizeof(symbol) * 8;
 using bitset = std::bitset<bitset_size>;

@@ -17,9 +17,9 @@ void huffman_encoder::create_encode_tree() {
         std::cout << "Error #201: empty input file" << std::endl;
         exit(0);
     }
-    std::priority_queue<std::pair<int, str>> tree;
+    std::priority_queue<std::pair<int, bstring>> tree;
     for (auto &number : numbers) {
-        str current_symbol;
+        bstring current_symbol;
         current_symbol.push_back(number.first);
         tree.push(make_pair(-number.second, current_symbol));
     }
@@ -34,7 +34,7 @@ void huffman_encoder::create_encode_tree() {
     }
     root = tree.top().second;
     for (auto &number : numbers) {
-        str current_symbol;
+        bstring current_symbol;
         current_symbol += (number.first);
         codes[number.first] = get_char_code(current_symbol);
     }
@@ -153,15 +153,15 @@ bool huffman_encoder::last_byte(symbol &s) {
     }
     return true;
 }
-symbol_code huffman_encoder::get_char_code(const str &current_symbol) {
-    str current_vertex = root;
+symbol_code huffman_encoder::get_char_code(const bstring &current_symbol) {
+    bstring current_vertex = root;
     std::vector<bool> my_bits;
     while (current_vertex.length() > 1) {
-        str left = huffman_tree[current_vertex].first, right = huffman_tree[current_vertex].second;
-        if (left.find(current_symbol) != str::npos) {
+        bstring left = huffman_tree[current_vertex].first, right = huffman_tree[current_vertex].second;
+        if (left.find(current_symbol) != bstring::npos) {
             current_vertex = left;
             my_bits.push_back(false);
-        } else if (right.find(current_symbol) != str::npos) {
+        } else if (right.find(current_symbol) != bstring::npos) {
             current_vertex = right;
             my_bits.push_back(true);
         } else {
